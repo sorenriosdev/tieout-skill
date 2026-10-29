@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook original-version='18.1' source-build='synthetic' source-platform='synthetic' version='18.1'>
+  <datasources>
+    <datasource caption='Sales (synthetic)' inline='true' name='federated.syn001' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='synthetic.csv' name='textscan.syn'>
+            <connection class='textscan' directory='.' filename='synthetic.csv' />
+          </named-connection>
+        </named-connections>
+      </connection>
+      <column datatype='string' name='[Segment]' role='dimension' type='nominal' />
+      <column datatype='real' name='[Amount]' role='measure' type='quantitative' />
+      <column caption='Amount x2' datatype='real' name='[Calculation_001]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='[Amount] * 2' />
+      </column>
+      <metadata-records>
+        <metadata-record class='column'><remote-name>Segment</remote-name><local-name>[Segment]</local-name></metadata-record>
+        <metadata-record class='column'><remote-name>Amount</remote-name><local-name>[Amount]</local-name></metadata-record>
+      </metadata-records>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='By segment'>
+      <table>
+        <view>
+          <datasources><datasource caption='Sales (synthetic)' name='federated.syn001' /></datasources>
+          <datasource-dependencies datasource='federated.syn001'>
+            <column datatype='string' name='[Segment]' role='dimension' type='nominal' />
+            <column datatype='real' name='[Amount]' role='measure' type='quantitative' />
+            <column-instance column='[Segment]' derivation='None' name='[none:Segment:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Amount]' derivation='Sum' name='[sum:Amount:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.syn001].[none:Segment:nk]'>
+            <groupfilter function='member' level='[none:Segment:nk]' member='&quot;Alpha&quot;' />
+          </filter>
+        </view>
+      </table>
+    </worksheet>
+    <worksheet name='Old check'>
+      <table>
+        <view>
+          <datasources><datasource caption='Sales (synthetic)' name='federated.syn001' /></datasources>
+          <datasource-dependencies datasource='federated.syn001'>
+            <column datatype='real' name='[Dif]' role='measure' type='quantitative' />
+            <column-instance column='[Dif]' derivation='Sum' name='[sum:Dif:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+        </view>
+      </table>
+    </worksheet>
+  </worksheets>
+  <dashboards>
+    <dashboard name='Summary'>
+      <zones><zone h='100' id='1' name='By segment' w='100' x='0' y='0' /></zones>
+    </dashboard>
+  </dashboards>
+  <windows source-height='30'>
+    <window class='worksheet' name='By segment' />
+    <window class='worksheet' hidden='true' name='Old check' />
+    <window class='dashboard' name='Summary' />
+  </windows>
+</workbook>

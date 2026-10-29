@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s7-schema-check
+expected_outcome: |
+  Reads data/dim_store.csv, notices that segment_name does not exist (the file has segment_code), says so and asks which column is meant, and does not put segment_name in the query.
+context:
+  scaffold_script: place-files.sh

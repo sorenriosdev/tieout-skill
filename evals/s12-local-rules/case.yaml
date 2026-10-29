@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s12-local-rules
+expected_outcome: |
+  Finds tieout/rules.local.md, applies the approved 90-day rule as decided (citing approver and date), implements models/active_customers.sql with it, and treats the unapproved status rule as an assumption to confirm instead of applying it.
+context:
+  scaffold_script: place-files.sh

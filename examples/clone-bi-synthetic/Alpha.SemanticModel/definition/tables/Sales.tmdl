@@ -1,0 +1,44 @@
+table Sales
+	lineageTag: 00000000-0000-0000-0000-000000000001
+
+	measure 'Total Amount' = SUM(Sales[Amount])
+		formatString: 0
+
+	measure 'Amount All Stores' = CALCULATE(SUM(Sales[Amount]), ALL(Store))
+		formatString: 0
+
+	measure 'Variance' = [Total Amount] - 0
+		formatString: 0
+
+	column OrderId
+		dataType: string
+		sourceColumn: OrderId
+
+	column StoreId
+		dataType: string
+		sourceColumn: StoreId
+
+	column Period
+		dataType: string
+		sourceColumn: Period
+
+	column Amount
+		dataType: string
+		sourceColumn: Amount
+
+	column Channel
+		dataType: string
+		sourceColumn: Channel
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(Sql.Database("synthetic-server", "synthetic-db"), "select order_id, store_id, period, amount, channel from dbo.sales", null, [EnableFolding = true]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each [period] >= "2026-01" and [amount] <> null),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"order_id"}),
+				    #"Merged Stores" = Table.NestedJoin(#"Removed Duplicates", {"store_id"}, Stores, {"store_id"}, "Stores", JoinKind.Inner),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Merged Stores", {{"amount", type number}})
+				in
+				    #"Changed Type"
+

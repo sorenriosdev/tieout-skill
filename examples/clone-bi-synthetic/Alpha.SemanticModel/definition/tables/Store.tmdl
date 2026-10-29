@@ -1,0 +1,15 @@
+table Store
+	lineageTag: 00000000-0000-0000-0000-000000000002
+
+	column StoreId
+		dataType: string
+		sourceColumn: StoreId
+
+	column StoreName
+		dataType: string
+		sourceColumn: StoreName
+
+	column SegmentCode
+		dataType: string
+		sourceColumn: SegmentCode
+

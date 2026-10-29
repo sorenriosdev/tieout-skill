@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s3-code-only
+expected_outcome: |
+  Without database access, returns ranked hypotheses tied to concrete differences between the two queries, each with a diagnostic query, all labelled not verified, and does not assert any cause as the confirmed or likely one.
+context:
+  scaffold_script: place-files.sh

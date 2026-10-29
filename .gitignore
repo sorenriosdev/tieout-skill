@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+# Private context never enters this repo
+private-context/
+banned-terms*.txt
+
+# claude plugin eval output
+evals/results/

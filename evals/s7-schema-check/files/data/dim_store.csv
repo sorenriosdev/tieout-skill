@@ -1,0 +1,4 @@
+store_id,store_name,segment_code,is_active
+1,Store 1,N,true
+2,Store 2,S,true
+3,Store 3,N,false

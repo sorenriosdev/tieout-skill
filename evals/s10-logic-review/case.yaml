@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s10-logic-review
+expected_outcome: |
+  With sqlglot available, runs sql_review.py diff on the two queries, reports the structural differences as facts, orders the tests by cost and power without ranking causes by likelihood, and puts the diagnostic SQL in the reply.
+context:
+  scaffold_script: place-files.sh

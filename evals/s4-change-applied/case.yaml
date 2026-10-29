@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s4-change-applied
+expected_outcome: |
+  Backs up models/b.sql, applies the approved change, measures the actual change in B's total (-655.46), compares it with the expected -555.46 from the proposal, reports the mismatch and does not close the case.
+context:
+  scaffold_script: place-files.sh

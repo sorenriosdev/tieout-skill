@@ -1,0 +1,3 @@
+#!/bin/sh
+# Blocks the commit if a banned term appears in the commit message.
+exec python3 "$(git rev-parse --show-toplevel)/dev/check_banned_terms.py" --message "$1"

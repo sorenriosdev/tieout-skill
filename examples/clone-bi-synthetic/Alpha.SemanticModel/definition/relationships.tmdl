@@ -1,0 +1,9 @@
+relationship 00000000-0000-0000-0000-0000000000a1
+	fromColumn: Sales.StoreId
+	toColumn: Store.StoreId
+
+relationship 00000000-0000-0000-0000-0000000000a2
+	crossFilteringBehavior: bothDirections
+	isActive: false
+	fromColumn: Sales.OrderId
+	toColumn: Store.StoreId

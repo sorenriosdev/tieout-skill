@@ -1,0 +1,12 @@
+{
+  "name": "tieout",
+  "description": "Change-safety method for data work: changes to queries, models, schemas, pipelines and dashboards are made with dated evidence, explicit approval and a way back. Tying out figures between two versions is the central check.",
+  "author": {
+    "name": "sorenriosdev",
+    "url": "https://github.com/sorenriosdev"
+  },
+  "homepage": "https://github.com/sorenriosdev/tieout-skill",
+  "repository": "https://github.com/sorenriosdev/tieout-skill",
+  "license": "MIT",
+  "keywords": ["data", "reconciliation", "tie-out", "sql", "migration", "data-quality", "bi"]
+}

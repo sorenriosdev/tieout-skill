@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s1-ambiguous-rule
+expected_outcome: |
+  Asks the user to choose between the two plausible definitions of an active customer (orders in the last 90 days vs status A), with evidence for each, leaves the case pending and does not implement either definition in models/active_customers.sql.
+context:
+  scaffold_script: place-files.sh

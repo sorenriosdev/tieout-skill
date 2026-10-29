@@ -1,0 +1,15 @@
+{
+  "name": "tieout-skill",
+  "description": "Marketplace for the tieout plugin.",
+  "owner": {
+    "name": "sorenriosdev",
+    "url": "https://github.com/sorenriosdev"
+  },
+  "plugins": [
+    {
+      "name": "tieout",
+      "source": "./",
+      "description": "Change-safety method for data work, with tie-out of figures between two versions as the central check."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s13-read-only
+expected_outcome: |
+  With only read tools, analyses the two queries, writes nothing, and delivers the differences, the tests with their SQL, the business questions and the closing block entirely in the reply.
+context:
+  scaffold_script: place-files.sh

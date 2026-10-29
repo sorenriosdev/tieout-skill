@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s6-reconcile-synthetic
+expected_outcome: |
+  Localizes the gap: missing credit notes (+47.75 effect) and repeated lines in B (+555.46), computes the waterfall with the bundled script, reports a residual of about 0.0103 within the 0.1428 tolerance, and leaves both business questions to an approver without changing the data.
+context:
+  scaffold_script: place-files.sh

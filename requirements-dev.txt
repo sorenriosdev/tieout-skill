@@ -1,0 +1,4 @@
+# Versions the tests and CI run against. Chosen for being mature (published at least three weeks
+# before they were pinned), not for being the newest. Raise them deliberately, after running the tests.
+sqlglot==30.21.0
+duckdb==1.5.6
