@@ -1,95 +1,66 @@
-# tieout
+<h1 align="center">
+  <img src="assets/banner.svg" width="680" height="200" alt="tieout: evidencia, aprobación y vuelta atrás para cada cambio de datos. Un gráfico de cascada lleva un total de referencia A a un total candidato B mediante dos efectos, y deja un residual cercano a cero marcado con una verificación.">
+</h1>
 
-*[Read in English](README.md)*
+<p align="center"><a href="README.md">Read in English</a></p>
 
-Una skill abierta para agentes de IA que trabajan con datos. Cualquier cambio a una query, modelo, esquema, pipeline o dashboard se hace con evidencia fechada, aprobación explícita y vuelta atrás. Cuadrar cifras entre dos versiones de lo mismo (una migración de motor, un refactor de lógica, un cambio de definición de una métrica, una auditoría) es la verificación central.
+**tieout es una skill para agentes que hace seguros los cambios de datos.** Cuando un agente edita una query, un modelo, un esquema o un reporte, tieout le exige mostrar evidencia primero, respaldar antes de editar, preguntar a una persona con nombre antes de decidir una regla de negocio y demostrar un cuadre con un script, no con una corazonada. Funciona con cualquier agente que lea [Agent Skills](https://agentskills.io) y no depende de una base de datos ni de una herramienta de BI concretas.
 
-Está pensada para ingenieros de datos, analistas, desarrolladores de BI e ingenieros de IA. No compite con las herramientas que ya existen: le dice al agente cuándo usarlas y qué hacer cuando faltan.
+> [!WARNING]
+> Borrador temprano, probado con datos sintéticos y solo en Claude Code. Mira el [estado](#estado).
 
-## Qué hace
+## Cómo es una respuesta
 
-Cinco playbooks: `reconcile` (cuadrar cifras), `logic-review` (comparar queries, con o sin datos), `migrate-sql` (entre motores), `clone-bi` (reportes de Power BI y Tableau) y `change-schema` (expandir y contraer). Cada tarea empieza eligiendo un peso: **light** (un cambio aprobado: respaldo, cambio, una fila en el registro), **decision** (una regla con dos lecturas: una pregunta, sin cambios) o **full** (el ciclo completo).
-
-- Declara un modo de trabajo según el acceso disponible: `code-only`, `one-system` o `both`.
-- Sigue un ciclo con compuertas: ninguna fase empieza sin el artefacto de la anterior (Spec → línea base → localizar → proponer → aprobar → aplicar → verificar → registrar).
-- Localiza diferencias con una escalera (total → periodo → dimensión → llave → fila → expresión) y un catálogo de 22 hipótesis, casi todas con un test SQL.
-- Cierra un caso solo cuando un script muestra que Δ = B − A se explica con efectos medidos más un residual dentro de la tolerancia acordada en la Spec.
-- Etiqueta cada afirmación como verificada, decidida por alguien, dato del usuario o suposición.
-
-## Qué no hace
-
-- No decide reglas de negocio. Cuando una regla tiene dos lecturas plausibles, formula la pregunta con opciones y evidencia, y espera a un aprobador nombrado.
-- No estima impacto financiero ni prescribe soluciones.
-- No hace a mano lo que debe hacer una herramienta. Si falta sqlglot o un cliente de base de datos, lo dice y se detiene o declara un modo reducido.
-
-## Qué es núcleo y qué es opcional
-
-El método (modos, ciclo con compuertas, 12 principios, etiquetas de evidencia, playbooks) no depende de ninguna herramienta. Los scripts de SQL (`sql_review`, `transpile_sql`, `u1_query`, `schema_impact`, `waterfall`) solo necesitan Python y sqlglot. `scripts/bi_fields.py` y `playbooks/clone-bi.md` son **adaptadores opcionales** para los formatos de archivo de Power BI (PBIR, TMDL) y Tableau (`.twb`), construidos con la documentación pública de esos fabricantes. Sin un adaptador, el agente lee los archivos de definición o consulta un conector, y etiqueta lo que leyó.
-
-## Estado: borrador temprano
-
-Qué se ha comprobado y qué no:
-
-- **Comportamiento.** Trece escenarios sintéticos en Claude Code, un modelo, dos o tres ejecuciones por brazo. La skill sacó 0,90 de media frente a 0,56 sin ella, con un coste de aproximadamente 1,8 veces. Ayudó más en la honestidad ante herramientas faltantes, los respaldos, los cuadres cerrados por script y en preguntar en vez de elegir una regla de negocio. No ayudó en la comprobación de una columna inexistente, y ni siquiera se activó en una investigación de solo lectura (la descripción se cambió después y ese cambio no está medido). Detalles, límites y cada cambio de grader: [evals/RESULTS-2026-10-26.md](evals/RESULTS-2026-10-26.md). Los escenarios y la skill se ajustaron a la vez, así que tómalo como una primera señal.
-- **Datos reales: ninguno.** `bi_fields.py` (Power BI PBIR y Tableau) se escribió a partir de los esquemas publicados por Microsoft y la estructura de `.twb`, y se probó solo con archivos armados a mano. Los tests SQL del catálogo se ejecutaron en DuckDB, no en BigQuery, Databricks ni otros motores; H17 tiene un literal de intervalo que sqlglot no adapta bien a BigQuery. La salida de `transpile_sql.py` se vuelve a leer sin error, pero no se ha ejecutado en un motor real.
-- El catálogo de hipótesis sale de la experiencia de campo de una sola persona y no lo ha revisado nadie más.
-- Solo se probó Claude Code. La skill sigue el formato abierto [Agent Skills](https://agentskills.io) y `adapters/AGENTS.md` lleva las reglas para agentes sin soporte de skills; ninguno se ha ejecutado en otro sitio.
-- La primera ejecución de la CI falló en Python 3.10 porque el validador de formato exige 3.11 o superior; el flujo se corrigió (3.11 a 3.13, dependencias fijadas) y no se ha vuelto a ejecutar. Las pruebas locales se hicieron en Python 3.12 y 3.14; 3.11 se comprobó solo en la gramática.
-
-Mira [ROADMAP.md](ROADMAP.md) para lo que falta y [docs/field-test.es.md](docs/field-test.es.md) para probarla en tu trabajo.
-## Instalación
-
-Claude Code, como plugin (`#next` es la rama en prueba; quítalo cuando `main` tenga la versión que quieras):
+Toda respuesta que toca o analiza un objeto termina con las mismas cuatro líneas:
 
 ```
-claude plugin marketplace add sorenriosdev/tieout-skill#next
+Backup:      tieout/backups/kpi_query.sql.20261030T0915
+Checked:     la query se analiza sin error; totales antes y después: 1.204,50 y 1.171,00
+Not checked: que account_type exista en la tabla del almacén [assumption]
+Pending:     que la jefa de Finanzas confirme que las cuentas TEST nunca cuentan
+```
+
+## Instalación
+
+**Claude Code**
+
+```
+claude plugin marketplace add sorenriosdev/tieout-skill
 claude plugin install tieout@tieout-skill
 ```
 
-Otros agentes que lean Agent Skills: copia `skills/tieout/` en la carpeta de skills del agente.
+**Codex**: mira [docs/codex.es.md](docs/codex.es.md). **Otros agentes**: copia `skills/tieout/` en la carpeta de skills del agente y pídela por nombre.
 
-Los scripts incluidos necesitan Python 3.11 o superior. `sqlglot` hace falta para trabajar con dialectos y `duckdb` para ejecutar los tests y el ejemplo:
+Los scripts necesitan Python 3.11 o superior y `pip install sqlglot duckdb` para el trabajo con SQL.
 
-```
-pip install sqlglot duckdb
-```
-
-Las pruebas y la CI usan sqlglot 30.21.0 y DuckDB 1.5.6 (`requirements-dev.txt`), elegidas por ser versiones maduras y no las más recientes.
-
-## Cómo usarla
-
-En Claude Code la skill se activa sola ante tareas como "estas dos cifras no cuadran", "traduce esta query a BigQuery" o "revisa este reporte antes de publicarlo". Para forzarla: `/tieout:tieout` seguido de la tarea, por ejemplo `/tieout:tieout compara estas dos versiones de la query; no tengo acceso a la base`. En agentes que leen Agent Skills: copia `skills/tieout/` en la carpeta de skills del agente y pídela por nombre. Codex: mira [docs/codex.es.md](docs/codex.es.md) (sin probar).
-
-Para una investigación de solo lectura, dilo en el prompt; la skill entonces no crea archivos y pone todo en la respuesta.
-
-## Tus propias reglas
-
-Pon las reglas que tu equipo ha aprobado en `tieout/rules.local.md` dentro de tu proyecto, como una tabla de regla, alcance, aprobador y fecha. Una regla sin aprobador o sin fecha se trata como suposición: no se aplica y se plantea como pregunta. La skill lee ese archivo y aplica esas reglas como decididas. Nunca escribe en él.
-
-## Estructura del repositorio
-
-| Ruta | Qué es |
-|---|---|
-| `skills/tieout/SKILL.md` | Punto de entrada: modos, ciclo, tipos de cambio, enrutado |
-| `skills/tieout/references/` | Principios del núcleo, escalera, etiquetas de evidencia, flags de detección, catálogo de hipótesis |
-| `skills/tieout/playbooks/` | `reconcile`, `logic-review`, `migrate-sql`, `clone-bi`, `change-schema` |
-| `skills/tieout/assets/templates/{en,es}/` | Spec, propuesta de cambio, registro de decisiones, registro de evidencia, hallazgos |
-| `skills/tieout/scripts/` | `check_capabilities`, `waterfall`, `u1_query`, `sql_review`, `transpile_sql`, `bi_fields`, `schema_impact` |
-| `examples/` | Caso de cuadre sintético y proyecto sintético de Power BI |
-| `adapters/AGENTS.md` | Reglas compactas para agentes sin soporte de skills (generado desde `SKILL.md`) |
-| `docs/field-test.es.md` | Cómo probarla en trabajo real y qué medir |
-| `evals/` | Escenarios de comportamiento para `claude plugin eval`, y sus resultados |
-| `tests/` | Tests del catálogo y de los scripts |
-
-## Compruébalo tú
+## Úsala
 
 ```
-python tests/test_hypotheses.py
-python tests/test_scripts.py
-python examples/reconcile-synthetic/run_example.py
-claude plugin eval . --scaffold --allow-tools Write Edit Bash   # ejecuciones reales del modelo, con coste
+/tieout:tieout compara estas dos versiones de la query; no tengo acceso a la base
 ```
+
+Si una investigación no debe cambiar nada, dilo: la skill entonces no crea archivos y responde en el mensaje.
+
+## Cómo funciona
+
+Cada tarea empieza eligiendo un peso y diciendo cuál:
+
+| Peso | Cuándo | Qué escribe |
+|---|---|---|
+| **light** | Un objeto, y el cambio está indicado o ya aprobado | Un respaldo, el cambio, una fila en el registro |
+| **decision** | Una regla tiene dos lecturas, o la elección es de otra persona | Una propuesta con la pregunta y las opciones. No se cambia nada |
+| **full** | Dos versiones no coinciden, o es un cuadre, una migración o una auditoría | El ciclo completo: spec, línea base, localizar, proponer, aprobar, aplicar, verificar, registrar |
+
+La regla de cierre que muestra el banner es Δ = B − A = Σ efectos + r, con el residual r dentro de una tolerancia que acordaste. Lo comprueba un script, no el agente.
+
+Seis playbooks en `skills/tieout/playbooks/` cubren cuadres (`reconcile`), trazado de campos (`trace`), revisión de queries (`logic-review`), migración entre motores (`migrate-sql`), clonado de reportes (`clone-bi`) y cambios de esquema (`change-schema`). Las reglas que hayas aprobado van en `tieout/rules.local.md`; la skill las aplica y trata una regla sin aprobador como una pregunta.
+
+## Estado
+
+Trece escenarios sintéticos, dos o tres ejecuciones cada uno: puntaje medio **0,90 con tieout y 0,56 sin ella**, con un coste de alrededor de 1,8 veces. Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-26.md).
+
+Aún sin hacer: ninguna ejecución con datos reales de Power BI, Tableau o un almacén (esos adaptadores son opcionales y se probaron con archivos armados a mano), SQL en motores distintos de DuckDB, una revisión del catálogo de hipótesis por otras personas, otros agentes, y una ejecución de la CI tras el primer fallo en Python 3.10. Detalles en [ROADMAP.md](ROADMAP.md). Para probarla en tu trabajo: [docs/field-test.es.md](docs/field-test.es.md).
 
 ## Licencia
 
-[MIT](LICENSE) © 2026 sorenriosdev
+[MIT](LICENSE), © 2026 sorenriosdev.
