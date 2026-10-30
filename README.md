@@ -10,9 +10,6 @@ When an agent does that work, tieout makes it show its evidence, back up before 
 
 It follows the [Agent Skills](https://agentskills.io) format, so agents that read it can use it (only Claude Code has been tested), and it does not depend on a particular database or BI tool.
 
-> [!WARNING]
-> Early draft, tested on synthetic data and in Claude Code only. See [Status](#status).
-
 ## What a reply looks like
 
 Every reply that touches or analyzes an object ends with the same four lines. Example, after an approved change that excludes TEST accounts from a monthly KPI query (hence the different totals):
@@ -27,15 +24,13 @@ Pending:     Finance lead to confirm that TEST accounts never count
 ## When to use it
 
 - "These two numbers don't match"
-- "Translate this query to another SQL engine"
+- "Translate this query to BigQuery"
 - "I copied this report for another team; check it before I publish"
 - "I'm changing how this metric is defined"
 
-It is for changing and comparing, not for exploring data to answer a new question. Tables feed reports and reports feed decisions, so a change is checked on the figures the next layer will read.
-
 Invoke it with `/tieout:tieout` and the task. To investigate without changing anything, say so: `/tieout:tieout read-only, create or change no file: why do these two queries return different totals?`
 
-Context gives the agent the facts it would otherwise have to ask you for. In a test where the meaning of a code was undocumented, the agent with context finished the task in 3 of 3 runs; without it, it stopped and asked in 3 of 3 (it never guessed the meaning or hardcoded ids). Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file is saved in your project's `tieout/` folder; if the folder is under version control and the file is private, keep it out of your commits.
+Context gives the agent the facts it would otherwise have to ask you for. In a test where the meaning of a code was undocumented, the agent with context finished the task in 3 of 3 runs; without it, it stopped and asked in 3 of 3 (it never guessed the meaning or hardcoded ids). Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file stays in your project: add `tieout/context.md` to your `.gitignore` if it is private.
 
 ## Install
 
@@ -74,6 +69,8 @@ A tie-out closes with Δ = B − A = Σ effects + residual. A is the reference f
 - It does not estimate financial impact or prescribe solutions.
 - It does not do by hand what a tool should do: if sqlglot or a database client is missing, it says so and stops or declares a reduced mode.
 
+tieout adds instructions and local scripts. Its scripts do not use the network or collect data; they read and write files in your project. What your agent sends to its provider depends on that agent, not on tieout.
+
 ## Status
 
 Thirteen synthetic scenarios, two runs each: average score **0.93 with tieout and 0.60 without**. It uses more tokens than working without it, because the method adds steps (backup, evidence, approval). It helped most where an agent would skip a step (naming a missing tool, backing up, closing with a script, asking instead of choosing a rule) and not at all on a missing-column check. The skill and the scenarios were tuned together, so read it as a first signal: [results](evals/RESULTS-2026-10-30.md).
@@ -83,7 +80,7 @@ Not done yet:
 - SQL on engines other than DuckDB, and agents other than Claude Code
 - CI is not passing yet
 
-The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from the author's experience and was tested on synthetic datasets; the author expects to use it in real work. It is open source: running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
+The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from one person's experience. Running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
 
 ## License
 

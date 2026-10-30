@@ -74,6 +74,8 @@ Un cuadre se cierra con Δ = B − A = Σ efectos + residual. A es la cifra de r
 - No estima impacto financiero ni prescribe soluciones.
 - No hace a mano lo que debería hacer una herramienta: si falta sqlglot o un cliente de base de datos, lo dice y se detiene o declara un modo reducido.
 
+tieout añade instrucciones y scripts locales. Sus scripts no usan la red ni recopilan datos; leen y escriben archivos de tu proyecto. Lo que tu agente envíe a su proveedor depende de ese agente, no de tieout.
+
 ## Estado
 
 Trece escenarios sintéticos, dos ejecuciones cada uno: puntaje medio **0,93 con tieout y 0,60 sin ella**. Usa más tokens que trabajar sin ella, porque el método añade pasos (respaldo, evidencia, aprobación). Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-30.md).
