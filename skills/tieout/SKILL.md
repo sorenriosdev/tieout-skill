@@ -134,7 +134,7 @@ A proposal has a status: `proposed`, `approved`, `rejected` or `superseded`. Kee
 
 ## Case folder
 
-Under the user's project: `tieout/decision-register.md`, `tieout/backups/`, `tieout/proposals/`, `tieout/rules.local.md` (the user's approved rules; read it, never write it), `tieout/context.md` (what the objects are; built from files the user attaches, stays in their project) and, for a full case, `tieout/<case-id>/` with `session.md`, `spec.md`, `evidence-log.md`, `findings.md`. If `rules.local.md` exists, its rules count as `[decided by <who>, <date>]`; a rule without approver or date is an `[assumption]`.
+Under the user's project: `tieout/decision-register.md`, `tieout/backups/`, `tieout/proposals/`, `tieout/rules.local.md` (the user's approved rules; read it, never write it), `tieout/context.md` (what the objects are; built from files the user attaches, stays in their project) and, for a full case, `tieout/<case-id>/` with `session.md`, `spec.md`, `evidence-log.md`, `findings.md`. If `rules.local.md` exists, its rules count as `[decided by <who>, <date>]`; a rule without approver or date is an `[assumption]`. An approved rule settles its question: apply it and do not reopen it. A conflicting rule with no approver is listed as pending and does not block the work.
 
 ## Where to go next
 
