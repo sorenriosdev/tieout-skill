@@ -74,7 +74,7 @@ Un cuadre se cierra con Δ = B − A = Σ efectos + residual. A es la cifra de r
 
 ## Estado
 
-Trece escenarios sintéticos, dos o tres ejecuciones cada uno: puntaje medio **0,90 con tieout y 0,56 sin ella**, con un coste de alrededor de 1,8 veces. Al volver a medir tres escenarios tras más cambios, la proporción fue de 2 a 5 veces. Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-26.md).
+Trece escenarios sintéticos, dos o tres ejecuciones cada uno: puntaje medio **0,90 con tieout y 0,56 sin ella**, con un coste de alrededor de 1,8 veces. Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-26.md).
 
 Aún sin hacer:
 - Ninguna ejecución con datos reales de Power BI, Tableau o un almacén (esos adaptadores son opcionales y se probaron con archivos armados a mano)
