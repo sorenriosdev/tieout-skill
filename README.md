@@ -74,7 +74,7 @@ A tie-out closes with Δ = B − A = Σ effects + residual. A is the reference f
 
 ## Status
 
-Thirteen synthetic scenarios, two or three runs each: average score **0.90 with tieout and 0.56 without**, at about 1.8 times the cost. It helped most where an agent would skip a step (naming a missing tool, backing up, closing with a script, asking instead of choosing a rule) and not at all on a missing-column check. The skill and the scenarios were tuned together, so read it as a first signal: [results](evals/RESULTS-2026-10-26.md).
+Thirteen synthetic scenarios, two runs each: average score **0.93 with tieout and 0.60 without**, at about 1.7 times the cost. It helped most where an agent would skip a step (naming a missing tool, backing up, closing with a script, asking instead of choosing a rule) and not at all on a missing-column check. The skill and the scenarios were tuned together, so read it as a first signal: [results](evals/RESULTS-2026-10-30.md).
 
 Not done yet:
 - Any run on real Power BI, Tableau or warehouse data (those adapters are optional and were tested on hand-built files)
