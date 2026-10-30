@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s15-no-context
+expected_outcome: |
+  Finds that the two models assign a rental with both a promo and a partner to a different channel because the priority order is swapped; the total (330) ties out and the breakdown moves 220/190 between promo and partner. Does not change the models and asks who decides which order is right.
+context:
+  scaffold_script: place-files.sh
