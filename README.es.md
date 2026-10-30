@@ -79,7 +79,7 @@ Aún sin hacer:
 - SQL en motores distintos de DuckDB, y agentes distintos de Claude Code
 - La CI todavía no pasa
 
-El catálogo de comprobaciones (22 causas frecuentes de un descuadre, la mayoría con una prueba SQL) sale de la experiencia de una persona. Ejecutarlo sobre tu propio trabajo y reportar lo que se le escapa es la forma más rápida de mejorarlo: mira [docs/field-test.es.md](docs/field-test.es.md). Pendientes: [ROADMAP.md](ROADMAP.md).
+El catálogo de comprobaciones (23 causas frecuentes de un descuadre, la mayoría con una prueba SQL) sale de la experiencia de una persona. Ejecutarlo sobre tu propio trabajo y reportar lo que se le escapa es la forma más rápida de mejorarlo: mira [docs/field-test.es.md](docs/field-test.es.md). Pendientes: [ROADMAP.md](ROADMAP.md).
 
 ## Licencia
 

@@ -4,7 +4,7 @@
 
 **Origin and limits:** this comes from the field experience of a single person. It still needs to be checked against other data engineers before it can be called complete (see section 7).
 
-**Contents:** 1 How to use · 2 Ladder (operating procedure in `ladder.md`) · 3 Symptom index · 4 Test U1 · 5 Waterfall · 6 Hypotheses: H01 snapshot · H02 same label · H03 time window · H04 unit/currency · H05 type filter · H06 consumption-layer filters · H07 NULL predicates · H08 fan-out · H09 join loss · H10 key format · H11 dimension history · H12 grain · H13 source duplicates · H14 source changes · H15 NULL arithmetic · H16 rounding · H17 time zone · H18 strings · H19 semantic-layer context · H20 contaminated reference · H21 positional UNION · H22 non-determinism · 7 Not covered yet
+**Contents:** 1 How to use · 2 Ladder (operating procedure in `ladder.md`) · 3 Symptom index · 4 Test U1 · 5 Waterfall · 6 Hypotheses: H01 snapshot · H02 same label · H03 time window · H04 unit/currency · H05 type filter · H06 consumption-layer filters · H07 NULL predicates · H08 fan-out · H09 join loss · H10 key format · H11 dimension history · H12 grain · H13 source duplicates · H14 source changes · H15 NULL arithmetic · H16 rounding · H17 time zone · H18 strings · H19 semantic-layer context · H20 contaminated reference · H21 positional UNION · H22 non-determinism · H23 classification order · 7 Not covered yet
 
 ---
 
@@ -21,7 +21,7 @@ Rules of use:
 5. **Hypotheses are not mutually exclusive and their effects can offset each other.** A total that ties out does not prove the breakdown ties out.
 6. **The catalog detects; it does not decide.** If the fix involves a business rule, the agent writes a question with options and evidence, and the case stays pending until a named approver answers.
 
-**SQL conventions.** `a` = reference, `b` = candidate. Columns: `k` key, `line` line within the key, `period` period as text `YYYY-MM`, `dim` classification dimension, `typ` record type, `m` measure, `ts` timestamp, `d` dimension or lookup table. Every test returns one row with `confirmed` (boolean) and `evidence` (amount or count). It runs on each system separately unless stated otherwise.
+**SQL conventions.** `a` = reference, `b` = candidate. Columns: `k` key, `line` line within the key, `period` period as text `YYYY-MM`, `dim` classification dimension, `dim2` a second classifier of the same row, `typ` record type, `m` measure, `ts` timestamp, `d` dimension or lookup table. Every test returns one row with `confirmed` (boolean) and `evidence` (amount or count). It runs on each system separately unless stated otherwise.
 
 ---
 
@@ -48,7 +48,7 @@ Rule: do not go down a rung without recording the result of the current one. If 
 | Difference with a single sign in every period | H05, H06, H07, H09, H03 |
 | Constant proportional difference (near-fixed ratio) | H04 |
 | Difference only in recent periods | H01, H14, H03 |
-| The total ties out but the breakdown by dimension does not | Trace the dimension's field on both sides first (`playbooks/trace.md`): H02 is a different field or definition under the same name. Then H08 + H09 offsetting, H18, H21 |
+| The total ties out but the breakdown by dimension does not | Trace the dimension's field on both sides first (`playbooks/trace.md`): H02 is a different field or definition under the same name. Then H23, H08 + H09 offsetting, H18, H21 |
 | A period or rows that should be there are missing in a report | Coverage profile per layer (`playbooks/trace.md`), then H03, H09, H14 |
 | B is higher than A | H08, H11, H12, H13 |
 | B is lower than A | H09, H05, H07, H10 |
@@ -411,6 +411,22 @@ FROM (SELECT k, ts FROM a GROUP BY k, ts HAVING COUNT(*) > 1) x
 - **Parameter:** `k` is the partition and `ts` the ordering column used in the real query.
 - **Decision:** technical (add a deterministic tie-breaker), unless choosing which row is valid is a business rule.
 
+### H23. Classification order
+- **Signature:** the total ties out but the breakdown by category does not; mass moves between categories while the sum stays the same.
+- **Cause:** a row can qualify for more than one category (two classifiers, or a cascade of rules) and each side assigns it by a different priority: the first rule that matches wins, so swapping the order moves the row.
+- **Reading:** for every classification that falls back through several fields or `CASE` branches, write the priority order on both sides and compare them. Look for rows that satisfy more than one branch.
+- **Power:** high.
+
+```sql test:H23
+SELECT COUNT(*) > 0 AS confirmed, COALESCE(SUM(m), 0) AS evidence
+FROM a
+WHERE dim IS NOT NULL AND dim2 IS NOT NULL AND dim <> dim2
+```
+
+- **Confirms:** there is mass whose category depends on which classifier is applied first (the exact effect is the mass that lands in a different category on the other side). **Rules out:** no row has two competing classifiers.
+- **Parameter:** `dim` and `dim2` are the two classifiers in the order the reference applies them.
+- **Decision:** business (which classifier takes priority).
+
 ---
 
 ## 7. What this catalog does not cover yet
@@ -418,5 +434,5 @@ FROM (SELECT k, ts FROM a GROUP BY k, ts HAVING COUNT(*) > 1) x
 - Data quality without a comparison (profiling, nulls, orphans): that is another playbook.
 - Performance and cost.
 - The visuals layer and report files (referenced fields, hidden pages, publishing binding): covered with scripts, not SQL tests.
-- Third-party validation: the 22 hypotheses come from one person's experience. Before publishing it as a "catalog", check them with at least two other engineers and add the missing ones.
+- Third-party validation: the 23 hypotheses come from one person's experience. Before publishing it as a "catalog", check them with at least two other engineers and add the missing ones.
 - Semantic equivalence across dialects (`STRUCT`, `ARRAY`, date functions, NULL handling): relies on sqlglot and a separate document.

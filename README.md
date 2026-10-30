@@ -79,7 +79,7 @@ Not done yet:
 - SQL on engines other than DuckDB, and agents other than Claude Code
 - CI is not passing yet
 
-The catalog of checks (22 common causes of a mismatch, most with a SQL test) comes from one person's experience. Running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
+The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from one person's experience. Running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
 
 ## License
 

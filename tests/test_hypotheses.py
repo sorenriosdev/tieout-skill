@@ -131,6 +131,10 @@ FIXTURES = {
         [values("a", "k, ts, m", f"(1, {ts('2026-01-01 10:00:00')}, 10)", f"(1, {ts('2026-01-01 10:00:00')}, 12)")],
         [values("a", "k, ts, m", f"(1, {ts('2026-01-01 10:00:00')}, 10)", f"(1, {ts('2026-01-01 11:00:00')}, 12)")],
     ),
+    "H23": (
+        [values("a", "dim, dim2, m", "('X', 'Y', 40)", "('X', NULL, 60)")],
+        [values("a", "dim, dim2, m", "('X', 'X', 40)", "('X', NULL, 60)")],
+    ),
 }
 
 # Tests that do not use the confirmed/evidence contract
