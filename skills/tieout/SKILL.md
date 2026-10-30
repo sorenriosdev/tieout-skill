@@ -20,10 +20,10 @@ If the work needs a tool you do not have, the **first sentence of your reply** n
 
 ## Context and state (read once, do not rediscover)
 
-- If `tieout/context.md` exists, read it first and once, for every weight. Its lines are `[user data: <source>]`; a line with no source is an `[assumption]`. Do not ask what it already answers.
-- If it is missing and the work is **full** or the objects are unfamiliar, ask the user to attach what they have (data dictionary, schema export, docs, a sample query) and draft `tieout/context.md` from it with `assets/templates/en/context.md`: one line per fact, each citing its file; what you inferred goes under "To confirm" as `[assumption]`. With nothing to attach, ask at most four things: what the objects are for, what one row is, which figure is the reference, which categories are assigned in priority order. Read-only: give the draft in the reply and create no file.
-- Keep the conversation small. Ask for everything you need in one message. Do not re-read a file you just wrote. Save long outputs to the evidence log and quote only the lines that matter.
-- In a full case `session.md` is also the state: after each phase add what is verified, what is ruled out and the next step. A new session starts from `session.md`, not from the transcript.
+- If `tieout/context.md` exists, read it once, for every weight. Its lines are `[user data: <source>]`; a line with no source is an `[assumption]`. Do not ask what it answers.
+- If it is missing and the work is **full** or the objects are unfamiliar, ask for what exists (data dictionary, schema, docs, a sample query) and draft it from `assets/templates/en/context.md`: one cited line per fact, inferences under "To confirm" as `[assumption]`. With nothing to attach, ask at most four things: purpose, what one row is, the reference figure, categories assigned in priority order. Read-only: draft it in the reply, no file.
+- Spend few turns: run independent reads and commands in the same turn, do not re-read what you wrote, write case files once per group (the Spec once agreed; evidence and findings together), and quote only the key lines of long outputs.
+- In a full case `session.md` is also the state (verified, ruled out, next step); a new session starts there.
 
 ## Step 2: pick the weight
 
@@ -131,7 +131,6 @@ A proposal has a status: `proposed`, `approved`, `rejected` or `superseded`. Kee
 - `python scripts/bi_fields.py pbir|model|twb ...`: fields a BI report references, checked against its model; Power Query steps, relationships and filter-context measures of a model.
 - `python scripts/schema_impact.py ...`: which SQL files and Power BI reports reference a table or column, before you change or drop it.
 
-Run any script with `--help` for its arguments.
 
 ## Case folder
 
