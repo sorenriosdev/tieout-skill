@@ -33,7 +33,7 @@ Pending:     que la jefa de Finanzas confirme que las cuentas TEST nunca cuentan
 
 Se invoca con `/tieout:tieout` y la tarea. Para investigar sin cambiar nada, dilo: `/tieout:tieout solo lectura, no crees ni cambies archivos: ¿por qué estas dos queries devuelven totales distintos?`
 
-Funciona mejor con contexto. Adjunta lo que tengas (diccionario de datos, esquema, documentación, una query de ejemplo) y el agente redacta `tieout/context.md` a partir de eso, citando el archivo de cada línea; sin nada que adjuntar, hace unas pocas preguntas. Ese archivo se queda en tu proyecto: añade `tieout/context.md` a tu `.gitignore` si es privado.
+El contexto evita que el agente adivine: cita hechos en vez de inventar cifras o fijar ids a mano. Adjunta lo que tengas (diccionario de datos, esquema, documentación, una query de ejemplo) y el agente redacta `tieout/context.md` a partir de eso, citando el archivo de cada línea; sin nada que adjuntar, hace unas pocas preguntas. Ese archivo se queda en tu proyecto: añade `tieout/context.md` a tu `.gitignore` si es privado.
 
 ## Instalación
 
@@ -74,11 +74,12 @@ Un cuadre se cierra con Δ = B − A = Σ efectos + residual. A es la cifra de r
 
 ## Estado
 
-Trece escenarios sintéticos, dos o tres ejecuciones cada uno: puntaje medio **0,90 con tieout y 0,56 sin ella**, con un coste de alrededor de 1,8 veces. Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-26.md).
+Trece escenarios sintéticos, dos o tres ejecuciones cada uno: puntaje medio **0,90 con tieout y 0,56 sin ella**, con un coste de alrededor de 1,8 veces. Al volver a medir tres escenarios tras más cambios, la proporción fue de 2 a 5 veces. Ayudó más donde un agente se habría saltado un paso (nombrar una herramienta faltante, respaldar, cerrar con un script, preguntar en vez de elegir una regla) y nada en la comprobación de una columna inexistente. La skill y los escenarios se ajustaron a la vez, así que tómalo como una primera señal: [resultados](evals/RESULTS-2026-10-26.md).
 
 Aún sin hacer:
 - Ninguna ejecución con datos reales de Power BI, Tableau o un almacén (esos adaptadores son opcionales y se probaron con archivos armados a mano)
 - SQL en motores distintos de DuckDB, y agentes distintos de Claude Code
+- Que el contexto reduzca las cifras inventadas (es su propósito; ningún escenario lo mide aún)
 - La CI todavía no pasa
 
 El catálogo de comprobaciones (23 causas frecuentes de un descuadre, la mayoría con una prueba SQL) sale de la experiencia de una persona. Ejecutarlo sobre tu propio trabajo y reportar lo que se le escapa es la forma más rápida de mejorarlo: mira [docs/field-test.es.md](docs/field-test.es.md). Pendientes: [ROADMAP.md](ROADMAP.md).
