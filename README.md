@@ -33,7 +33,7 @@ Pending:     Finance lead to confirm that TEST accounts never count
 
 Invoke it with `/tieout:tieout` and the task. To investigate without changing anything, say so: `/tieout:tieout read-only, create or change no file: why do these two queries return different totals?`
 
-Context keeps the agent from guessing: it cites facts instead of inventing figures or hardcoding ids. Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file stays in your project: add `tieout/context.md` to your `.gitignore` if it is private.
+Context gives the agent the facts it would otherwise have to ask you for. In a test where the meaning of a code was undocumented, the agent with context finished the task in 3 of 3 runs; without it, it stopped and asked in 3 of 3 (it never guessed the meaning or hardcoded ids). Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file stays in your project: add `tieout/context.md` to your `.gitignore` if it is private.
 
 ## Install
 
@@ -74,12 +74,11 @@ A tie-out closes with Δ = B − A = Σ effects + residual. A is the reference f
 
 ## Status
 
-Thirteen synthetic scenarios, two runs each: average score **0.93 with tieout and 0.60 without**, at about 1.7 times the cost. It helped most where an agent would skip a step (naming a missing tool, backing up, closing with a script, asking instead of choosing a rule) and not at all on a missing-column check. The skill and the scenarios were tuned together, so read it as a first signal: [results](evals/RESULTS-2026-10-30.md).
+Thirteen synthetic scenarios, two runs each: average score **0.93 with tieout and 0.60 without**. It uses more tokens than working without it, because the method adds steps (backup, evidence, approval). It helped most where an agent would skip a step (naming a missing tool, backing up, closing with a script, asking instead of choosing a rule) and not at all on a missing-column check. The skill and the scenarios were tuned together, so read it as a first signal: [results](evals/RESULTS-2026-10-30.md).
 
 Not done yet:
 - Any run on real Power BI, Tableau or warehouse data (those adapters are optional and were tested on hand-built files)
 - SQL on engines other than DuckDB, and agents other than Claude Code
-- That the context file reduces invented figures (it is the purpose; no scenario measures it yet)
 - CI is not passing yet
 
 The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from one person's experience. Running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
