@@ -27,13 +27,15 @@ Pending:     que la jefa de Finanzas confirme que las cuentas TEST nunca cuentan
 ## Cuándo usarla
 
 - "Estas dos cifras no coinciden"
-- "Traduce esta query a BigQuery"
+- "Traduce esta query a otro motor SQL"
 - "Copié este reporte para otro equipo; revísalo antes de publicarlo"
 - "Voy a cambiar cómo se define esta métrica"
 
+Sirve para cambiar y comparar, no para explorar datos y responder una pregunta nueva. Las tablas alimentan reportes y los reportes alimentan decisiones, así que un cambio se verifica en las cifras que leerá la capa siguiente.
+
 Se invoca con `/tieout:tieout` y la tarea. Para investigar sin cambiar nada, dilo: `/tieout:tieout solo lectura, no crees ni cambies archivos: ¿por qué estas dos queries devuelven totales distintos?`
 
-El contexto da al agente los datos que de otro modo tendría que preguntarte. En una prueba donde el significado de un código no estaba documentado, el agente con contexto terminó la tarea en 3 de 3 ejecuciones; sin él, se detuvo y preguntó en 3 de 3 (nunca adivinó el significado ni fijó ids a mano). Adjunta lo que tengas (diccionario de datos, esquema, documentación, una query de ejemplo) y el agente redacta `tieout/context.md` a partir de eso, citando el archivo de cada línea; sin nada que adjuntar, hace unas pocas preguntas. Ese archivo se queda en tu proyecto: añade `tieout/context.md` a tu `.gitignore` si es privado.
+El contexto da al agente los datos que de otro modo tendría que preguntarte. En una prueba donde el significado de un código no estaba documentado, el agente con contexto terminó la tarea en 3 de 3 ejecuciones; sin él, se detuvo y preguntó en 3 de 3 (nunca adivinó el significado ni fijó ids a mano). Adjunta lo que tengas (diccionario de datos, esquema, documentación, una query de ejemplo) y el agente redacta `tieout/context.md` a partir de eso, citando el archivo de cada línea; sin nada que adjuntar, hace unas pocas preguntas. Ese archivo se guarda en la carpeta `tieout/` de tu proyecto; si esa carpeta está bajo control de versiones y el archivo es privado, déjalo fuera de tus commits.
 
 ## Instalación
 
@@ -81,7 +83,7 @@ Aún sin hacer:
 - SQL en motores distintos de DuckDB, y agentes distintos de Claude Code
 - La CI todavía no pasa
 
-El catálogo de comprobaciones (23 causas frecuentes de un descuadre, la mayoría con una prueba SQL) sale de la experiencia de una persona. Ejecutarlo sobre tu propio trabajo y reportar lo que se le escapa es la forma más rápida de mejorarlo: mira [docs/field-test.es.md](docs/field-test.es.md). Pendientes: [ROADMAP.md](ROADMAP.md).
+El catálogo de comprobaciones (23 causas frecuentes de un descuadre, la mayoría con una prueba SQL) sale de la experiencia del autor y se probó con conjuntos de datos sintéticos; el autor espera usarlo en trabajo real. Es de código abierto: ejecutarlo sobre tu propio trabajo y reportar lo que se le escapa es la forma más rápida de mejorarlo: mira [docs/field-test.es.md](docs/field-test.es.md). Pendientes: [ROADMAP.md](ROADMAP.md).
 
 ## Licencia
 

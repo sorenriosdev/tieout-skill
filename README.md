@@ -27,13 +27,15 @@ Pending:     Finance lead to confirm that TEST accounts never count
 ## When to use it
 
 - "These two numbers don't match"
-- "Translate this query to BigQuery"
+- "Translate this query to another SQL engine"
 - "I copied this report for another team; check it before I publish"
 - "I'm changing how this metric is defined"
 
+It is for changing and comparing, not for exploring data to answer a new question. Tables feed reports and reports feed decisions, so a change is checked on the figures the next layer will read.
+
 Invoke it with `/tieout:tieout` and the task. To investigate without changing anything, say so: `/tieout:tieout read-only, create or change no file: why do these two queries return different totals?`
 
-Context gives the agent the facts it would otherwise have to ask you for. In a test where the meaning of a code was undocumented, the agent with context finished the task in 3 of 3 runs; without it, it stopped and asked in 3 of 3 (it never guessed the meaning or hardcoded ids). Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file stays in your project: add `tieout/context.md` to your `.gitignore` if it is private.
+Context gives the agent the facts it would otherwise have to ask you for. In a test where the meaning of a code was undocumented, the agent with context finished the task in 3 of 3 runs; without it, it stopped and asked in 3 of 3 (it never guessed the meaning or hardcoded ids). Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file is saved in your project's `tieout/` folder; if the folder is under version control and the file is private, keep it out of your commits.
 
 ## Install
 
@@ -81,7 +83,7 @@ Not done yet:
 - SQL on engines other than DuckDB, and agents other than Claude Code
 - CI is not passing yet
 
-The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from one person's experience. Running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
+The catalog of checks (23 common causes of a mismatch, most with a SQL test) comes from the author's experience and was tested on synthetic datasets; the author expects to use it in real work. It is open source: running it on your own work and reporting what it misses is the fastest way to improve it: see [docs/field-test.md](docs/field-test.md). Open items: [ROADMAP.md](ROADMAP.md).
 
 ## License
 
