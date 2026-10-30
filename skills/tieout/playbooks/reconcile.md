@@ -7,7 +7,7 @@ This playbook follows the cycle in `SKILL.md`. Each phase lists what to do, what
 ## Phase 0. Capabilities and mode
 
 1. Run `python scripts/check_capabilities.py --require sqlglot` if either side needs a dialect translation; otherwise without `--require`.
-2. Create `tieout/<case-id>/session.md` with the script output, the declared mode, and the list of agent tools you can use (BI connectors, database tools).
+2. Create `tieout/<case-id>/session.md` (it doubles as the case state; see "Context and state" in SKILL.md) with the script output, the declared mode, and the list of agent tools you can use (BI connectors, database tools).
 3. If the script exits 1, the first sentence of your reply names what is missing and what is therefore unverified. Then choose with the user: stop, or continue in a named reduced mode (for example "code-only, no dialect translation: queries are written for the reference dialect only"). A hand-written translation is allowed only in a reduced mode the user accepted, labelled `[assumption]` and delivered with the query that would verify it; never present it as ready to run.
 
 ## Phase 1. Spec

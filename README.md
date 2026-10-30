@@ -33,6 +33,8 @@ Pending:     Finance lead to confirm that TEST accounts never count
 
 Invoke it with `/tieout:tieout` and the task. To investigate without changing anything, say so: `/tieout:tieout read-only, create or change no file: why do these two queries return different totals?`
 
+It works better with context. Attach what you have (data dictionary, schema export, docs, a sample query) and the agent drafts `tieout/context.md` from it, citing the file for each line; without it, it asks a few questions. That file stays in your project: add `tieout/context.md` to your `.gitignore` if it is private.
+
 ## Install
 
 **Claude Code**

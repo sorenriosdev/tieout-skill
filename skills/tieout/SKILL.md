@@ -18,6 +18,13 @@ Paths in this file are relative to the folder that contains this `SKILL.md`. Rep
 
 If the work needs a tool you do not have, the **first sentence of your reply** names the tool and what is therefore unverified, before any deliverable. Check when the task involves SQL dialect work (`python scripts/check_capabilities.py --require sqlglot`), running queries (a database client or connector), or a BI tool (its connector). Then stop, or continue in a reduced mode you name. Never do a tool's job by hand without saying so first; a hand-made translation is an `[assumption]`, delivered with the check that would verify it, never described as ready to run.
 
+## Context and state (read once, do not rediscover)
+
+- If `tieout/context.md` exists, read it first and once, for every weight. Its lines are `[user data: <source>]`; a line with no source is an `[assumption]`. Do not ask what it already answers.
+- If it is missing and the work is **full** or the objects are unfamiliar, ask the user to attach what they have (data dictionary, schema export, docs, a sample query) and draft `tieout/context.md` from it with `assets/templates/en/context.md`: one line per fact, each citing its file; what you inferred goes under "To confirm" as `[assumption]`. With nothing to attach, ask at most four things: what the objects are for, what one row is, which figure is the reference, which categories are assigned in priority order. Read-only: give the draft in the reply and create no file.
+- Keep the conversation small. Ask for everything you need in one message. Do not re-read a file you just wrote. Save long outputs to the evidence log and quote only the lines that matter.
+- In a full case `session.md` is also the state: after each phase add what is verified, what is ruled out and the next step. A new session starts from `session.md`, not from the transcript.
+
 ## Step 2: pick the weight
 
 Effort should match the risk. Choose one, say which in one line, and move up if the work turns out to need it.
@@ -128,7 +135,7 @@ Run any script with `--help` for its arguments.
 
 ## Case folder
 
-Under the user's project: `tieout/decision-register.md`, `tieout/backups/`, `tieout/proposals/`, `tieout/rules.local.md` (the user's approved rules; read it, never write it) and, for a full case, `tieout/<case-id>/` with `session.md`, `spec.md`, `evidence-log.md`, `findings.md`. If `rules.local.md` exists, its rules count as `[decided by <who>, <date>]`; a rule without approver or date is an `[assumption]`.
+Under the user's project: `tieout/decision-register.md`, `tieout/backups/`, `tieout/proposals/`, `tieout/rules.local.md` (the user's approved rules; read it, never write it), `tieout/context.md` (what the objects are; built from files the user attaches, stays in their project) and, for a full case, `tieout/<case-id>/` with `session.md`, `spec.md`, `evidence-log.md`, `findings.md`. If `rules.local.md` exists, its rules count as `[decided by <who>, <date>]`; a rule without approver or date is an `[assumption]`.
 
 ## Where to go next
 

@@ -33,6 +33,8 @@ Pending:     que la jefa de Finanzas confirme que las cuentas TEST nunca cuentan
 
 Se invoca con `/tieout:tieout` y la tarea. Para investigar sin cambiar nada, dilo: `/tieout:tieout solo lectura, no crees ni cambies archivos: ¿por qué estas dos queries devuelven totales distintos?`
 
+Funciona mejor con contexto. Adjunta lo que tengas (diccionario de datos, esquema, documentación, una query de ejemplo) y el agente redacta `tieout/context.md` a partir de eso, citando el archivo de cada línea; sin nada que adjuntar, hace unas pocas preguntas. Ese archivo se queda en tu proyecto: añade `tieout/context.md` a tu `.gitignore` si es privado.
+
 ## Instalación
 
 **Claude Code**
