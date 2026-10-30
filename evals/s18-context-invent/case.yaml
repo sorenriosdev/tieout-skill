@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: s18-context-invent
+expected_outcome: |
+  Edits the model to exclude test accounts through the account_type column (not a list of ids), and either cites the source for what the code means or flags it as unconfirmed.
+context:
+  scaffold_script: place-files.sh
