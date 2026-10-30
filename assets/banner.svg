@@ -1,24 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="tieout: evidence, approval and a way back for every data change">
-  <rect x="0.5" y="0.5" width="679" height="199" rx="10" fill="#1F3A33" stroke="#2F5047"/>
-  <text x="36" y="84" font-family="Georgia,'Times New Roman',serif" font-size="44" fill="#EDE9DD">tieout</text>
-  <text x="36" y="112" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="14" fill="#B4C4BB">Evidence, approval and a way back</text>
-  <text x="36" y="132" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="14" fill="#B4C4BB">for every data change.</text>
-  <text x="36" y="168" font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic" fill="#EDE9DD">Δ = B − A = Σ effects + residual ≈ 0</text>
-
-  <line x1="372" y1="150" x2="644" y2="150" stroke="#3E6157"/>
-  <g stroke="#5D7D71" stroke-dasharray="3 3">
-    <line x1="406" y1="100" x2="436" y2="100"/>
-    <line x1="470" y1="76" x2="486" y2="76"/>
-    <line x1="520" y1="86" x2="538" y2="86"/>
-    <line x1="572" y1="86" x2="590" y2="86"/>
-  </g>
-  <rect x="372" y="100" width="34" height="50" rx="3" fill="#7E9C8F"/>
-  <rect x="436" y="76" width="34" height="24" rx="3" fill="#EDE9DD"/>
-  <rect x="486" y="76" width="34" height="10" rx="3" fill="#B9B5A7"/>
-  <rect x="538" y="85" width="34" height="2" fill="#E3B341"/>
-  <path d="M546 67 L551 73 L563 59" fill="none" stroke="#E3B341" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="590" y="86" width="34" height="64" rx="3" fill="#7E9C8F"/>
-  <g font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="12" fill="#9DB2A8" text-anchor="middle">
-    <text x="389" y="170">A</text><text x="453" y="170">+ef1</text><text x="503" y="170">−ef2</text><text x="555" y="170">res.</text><text x="607" y="170">B</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-labelledby="t">
+<title id="t">tieout: evidence, approval and a way back for every data change</title>
+<rect x="0.5" y="0.5" width="679" height="199" rx="10" fill="#1F3A33" stroke="#2F5047"/>
+<text x="48" y="106" font-family="Georgia,'Times New Roman',serif" font-size="84" fill="#EDE9DD" textLength="234" lengthAdjust="spacingAndGlyphs">tieout</text>
+<line x1="48" y1="130" x2="598" y2="130" stroke="#4A6E62" stroke-width="1.5"/>
+<text x="50" y="158" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="19" fill="#B4C4BB" textLength="548" lengthAdjust="spacingAndGlyphs">Evidence, approval and a way back for every data change.</text>
 </svg>
