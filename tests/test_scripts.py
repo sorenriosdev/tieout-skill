@@ -27,6 +27,17 @@ def run(script, *args, python=sys.executable):
     return subprocess.run([python, str(SCRIPTS / script), *map(str, args)], capture_output=True, text=True)
 
 
+# --- output encoding -----------------------------------------------------------
+
+@test
+def scripts_do_not_crash_on_a_legacy_console_encoding():
+    import os
+    env = {**os.environ, "PYTHONIOENCODING": "cp1252"}
+    for script in ("waterfall.py", "check_capabilities.py", "bi_fields.py"):
+        r = subprocess.run([sys.executable, str(SCRIPTS / script), "--help"], capture_output=True, env=env)
+        assert r.returncode == 0, (script, r.stderr.decode("utf-8", "replace")[-200:])
+
+
 # --- check_capabilities.py ---------------------------------------------------
 
 @test

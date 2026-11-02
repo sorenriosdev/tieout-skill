@@ -51,6 +51,9 @@ def library_status(name):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # Windows consoles default to a legacy code page
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--require", default="", help="comma-separated libraries or CLIs the task needs")
     args = ap.parse_args()

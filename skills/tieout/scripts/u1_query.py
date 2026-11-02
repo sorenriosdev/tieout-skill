@@ -93,6 +93,9 @@ def build(dialect, a_table, b_table, key, measure):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # Windows consoles default to a legacy code page
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dialect", required=True, help="sqlglot dialect name, e.g. bigquery, databricks, snowflake, postgres, duckdb, tsql")
     ap.add_argument("--a-table", required=True, help="reference table A (may be qualified)")
