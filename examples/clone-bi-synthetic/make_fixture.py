@@ -167,20 +167,20 @@ def main():
     # Beta.Report starts as a plain copy of Alpha.Report, then points at its own model.
     shutil.copytree(HERE / "Alpha.Report", HERE / "Beta.Report")
     pbir = HERE / "Beta.Report" / "definition.pbir"
-    data = json.loads(pbir.read_text())
+    data = json.loads(pbir.read_text(encoding="utf-8"))
     data["datasetReference"]["byPath"]["path"] = "../Beta.SemanticModel"
-    pbir.write_text(json.dumps(data, indent=2) + "\n")
+    pbir.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     # A page was deleted from the copy but the active page still points at it.
     pages = HERE / "Beta.Report" / "definition" / "pages" / "pages.json"
-    meta = json.loads(pages.read_text())
+    meta = json.loads(pages.read_text(encoding="utf-8"))
     meta["activePageName"] = "old_overview"
-    pages.write_text(json.dumps(meta, indent=2) + "\n")
+    pages.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
     # The report-level copy of a filter reuses a name already used on the detail page.
     report = HERE / "Beta.Report" / "definition" / "report.json"
-    rdata = json.loads(report.read_text())
+    rdata = json.loads(report.read_text(encoding="utf-8"))
     rdata["filterConfig"] = {"filters": [{"name": "saved_filter", "field": col("Store", "SegmentCode"),
                                           "type": "Categorical", "filter": in_filter("Store", "SegmentCode", ["A1"])}]}
-    report.write_text(json.dumps(rdata, indent=2) + "\n")
+    report.write_text(json.dumps(rdata, indent=2) + "\n", encoding="utf-8")
     print("wrote Alpha.* and Beta.* under", HERE)
 
 

@@ -59,6 +59,9 @@ def table_rows(markdown):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # Windows consoles default to a legacy code page
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", help="folder for effects.csv and waterfall.md (default: a temp folder)")
     out = pathlib.Path(ap.parse_args().out or tempfile.mkdtemp(prefix="tieout-example-"))
@@ -82,7 +85,7 @@ def main():
 
     u1 = subprocess.run([sys.executable, str(SCRIPTS / "u1_query.py"), "--dialect", "duckdb",
                          "--a-table", "a", "--b-table", "b", "--key", "k", "--measure", "m"],
-                        capture_output=True, text=True, check=True).stdout
+                        capture_output=True, text=True, encoding="utf-8", check=True).stdout
     solo_a, solo_b, comunes, dif = con.execute(u1).fetchone()
     print(f"U1 by document: only in A = {solo_a}, only in B = {solo_b}, common = {comunes}, total = {dif}")
     assert dif == -solo_a + solo_b + comunes, "U1 identity does not hold"
@@ -111,7 +114,8 @@ def main():
                            + "".join(f"{i},{d},{e},{ev}\n" for i, d, e, ev in effects), encoding="utf-8")
     wf = subprocess.run([sys.executable, str(SCRIPTS / "waterfall.py"), "close", "--a", str(A), "--b", str(B),
                          "--effects", str(effects_csv), "--eps-abs", spec_value("Absolute tolerance (ε_abs)"),
-                         "--eps-rel", spec_value("Relative tolerance (ε_rel)")], capture_output=True, text=True)
+                         "--eps-rel", spec_value("Relative tolerance (ε_rel)")], capture_output=True, text=True,
+                         encoding="utf-8")
     (out / "waterfall.md").write_text(wf.stdout, encoding="utf-8")
     print()
     print(wf.stdout)

@@ -24,7 +24,7 @@ def test(fn):
 
 
 def run(script, *args, python=sys.executable):
-    return subprocess.run([python, str(SCRIPTS / script), *map(str, args)], capture_output=True, text=True)
+    return subprocess.run([python, str(SCRIPTS / script), *map(str, args)], capture_output=True, text=True, encoding="utf-8")
 
 
 # --- output encoding -----------------------------------------------------------
@@ -125,7 +125,7 @@ def waterfall_rejects_comma_numbers():
 
 @test
 def waterfall_rejects_bad_header_and_duplicates():
-    f = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False)
+    f = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8")
     f.write("hyp,amount\nH1,3\n")
     f.close()
     r = run("waterfall.py", "close", "--a", "0", "--b", "3", "--effects", f.name, "--eps-abs", "0", "--eps-rel", "0")
@@ -190,7 +190,7 @@ def u1_stops_without_sqlglot():
     code = ("import sys, runpy; sys.modules['sqlglot'] = None; "
             f"sys.argv = ['u1_query.py', '--dialect', 'duckdb', '--a-table', 'x', '--b-table', 'y', '--key', 'k', '--measure', 'm']; "
             f"runpy.run_path({str(SCRIPTS / 'u1_query.py')!r}, run_name='__main__')")
-    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, encoding="utf-8")
     assert r.returncode == 2 and "sqlglot is not installed" in r.stderr and "WITH" not in r.stdout, r.stderr
 
 
@@ -230,7 +230,7 @@ def review_lint_flags_signals_and_respects_null_handling():
 
 @test
 def review_lint_other_signals():
-    f = tempfile.NamedTemporaryFile("w", suffix=".sql", delete=False)
+    f = tempfile.NamedTemporaryFile("w", suffix=".sql", delete=False, encoding="utf-8")
     f.write("SELECT a, b FROM t1 UNION ALL SELECT b, a FROM t2;\n"
             "SELECT x FROM t LEFT JOIN d ON t.k = d.k WHERE d.flag = 1 LIMIT 5;\n"
             "SELECT m1 + m2 AS s, m1 / m2 AS r FROM t;\n")
@@ -245,9 +245,9 @@ def review_stops_without_sqlglot_and_on_bad_sql():
     code = ("import sys, runpy; sys.modules['sqlglot'] = None; "
             f"sys.argv = ['sql_review.py', 'lint', {str(S3Q / 'revenue_new.sql')!r}]; "
             f"runpy.run_path({str(SCRIPTS / 'sql_review.py')!r}, run_name='__main__')")
-    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, encoding="utf-8")
     assert r.returncode == 2 and "sqlglot is not installed" in r.stderr and "| H" not in r.stdout
-    bad = tempfile.NamedTemporaryFile("w", suffix=".sql", delete=False)
+    bad = tempfile.NamedTemporaryFile("w", suffix=".sql", delete=False, encoding="utf-8")
     bad.write("SELEC FROM WHERE (")
     bad.close()
     assert review("lint", bad.name).returncode == 2
@@ -276,10 +276,10 @@ def transpile_reports_translation_and_what_to_check():
 def transpile_out_never_overwrites():
     target = pathlib.Path(tempfile.mkdtemp()) / "out.sql"
     assert transpile(S2Q, "--from", "duckdb", "--to", "databricks", "--out", target).returncode in (0, 1)
-    assert target.is_file() and target.read_text().strip().endswith(";")
-    first = target.read_text()
+    assert target.is_file() and target.read_text(encoding="utf-8").strip().endswith(";")
+    first = target.read_text(encoding="utf-8")
     r = transpile(S2Q, "--from", "duckdb", "--to", "bigquery", "--out", target)
-    assert r.returncode == 2 and "refusing to overwrite" in r.stderr and target.read_text() == first
+    assert r.returncode == 2 and "refusing to overwrite" in r.stderr and target.read_text(encoding="utf-8") == first
 
 
 @test
@@ -293,7 +293,7 @@ def transpile_stops_without_sqlglot():
     code = ("import sys, runpy; sys.modules['sqlglot'] = None; "
             f"sys.argv = ['transpile_sql.py', {str(S2Q)!r}, '--from', 'duckdb', '--to', 'bigquery']; "
             f"runpy.run_path({str(SCRIPTS / 'transpile_sql.py')!r}, run_name='__main__')")
-    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, encoding="utf-8")
     assert r.returncode == 2 and "sqlglot is not installed" in r.stderr and "SELECT" not in r.stdout
 
 
@@ -323,7 +323,7 @@ def impact(*args):
 def sql_dir(files):
     d = pathlib.Path(tempfile.mkdtemp())
     for name, body in files.items():
-        (d / name).write_text(body)
+        (d / name).write_text(body, encoding="utf-8")
     return d
 
 
@@ -410,7 +410,7 @@ def bi_clone_reports_structure_and_inherited_values():
 
 @test
 def bi_against_file_replaces_model_detection():
-    f = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False)
+    f = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
     f.write("# fields of the target\nSales.Total Amount\nSales.Amount\nStore.StoreName\nStore.SegmentCode\n")
     f.close()
     r = bi("pbir", CLONE / "Beta.Report", "--against", f.name)
@@ -421,7 +421,7 @@ def bi_against_file_replaces_model_detection():
 def bi_refuses_pbir_legacy_and_missing_input():
     legacy = pathlib.Path(tempfile.mkdtemp()) / "Old.Report"
     legacy.mkdir()
-    (legacy / "report.json").write_text("{}")
+    (legacy / "report.json").write_text("{}", encoding="utf-8")
     r = bi("pbir", legacy)
     assert r.returncode == 2 and "PBIR-Legacy" in r.stderr, r.stderr
     assert bi("pbir", legacy / "nope").returncode == 2
@@ -493,7 +493,7 @@ def bi_tableau_workbook():
 
 @test
 def bi_tableau_refuses_xml_entities():
-    f = tempfile.NamedTemporaryFile("w", suffix=".twb", delete=False)
+    f = tempfile.NamedTemporaryFile("w", suffix=".twb", delete=False, encoding="utf-8")
     f.write('<?xml version="1.0"?><!DOCTYPE x [<!ENTITY a "b">]><workbook/>')
     f.close()
     r = bi("twb", f.name)
@@ -501,6 +501,9 @@ def bi_tableau_refuses_xml_entities():
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # Windows consoles default to a legacy code page
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     failures = []
     for fn in TESTS:
         try:
