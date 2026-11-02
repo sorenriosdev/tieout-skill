@@ -10,7 +10,7 @@ Read-only. Never writes to the report. Standard library only.
 pbir  A Power BI report in PBIR format (a "<name>.Report" folder with a
       "definition" subfolder). Reports:
         - structure: pages.json against the page folders, active and landing
-          page, JSON validity, names, duplicated filter or binding names
+          page, JSON validity, names, duplicated binding names (repeated filter names are notes)
         - every field each visual, page and report filter references,
           including hidden visuals and hidden pages
         - fields that do not exist in the semantic model (TMDL or model.bim)
@@ -320,7 +320,7 @@ def pbir_report(args):
 
     for name, places in filter_names.items():
         if name and len(places) > 1:
-            problems.append(f"filter name '{name}' is used {len(places)} times ({', '.join(places)}); Microsoft requires it to be unique across the report")
+            notes.append(f"filter name '{name}' appears {len(places)} times ({', '.join(places)}); often a filter cloned with its visual. Check by hand that it is unique before publishing")
     for name, pages in binding_names.items():
         if len(pages) > 1:
             problems.append(f"pageBinding name '{name}' is used by pages {', '.join(pages)}; it must be unique (a copied page keeps the source page's binding)")

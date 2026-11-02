@@ -36,6 +36,7 @@ Documented as a preview feature ("Detect and reload external PBIP changes"), Aug
 ### Connectors
 
 - Microsoft documents a **Power BI Authoring MCP server**: it reads and writes semantic models (tables, columns, measures, relationships, DAX validation, TMDL and PBIP files). A local server (stdio) is described as generally available and works with Desktop and PBIP folders; a Microsoft-hosted endpoint is described as preview and works with models in Fabric workspaces. Community material also calls it "Power BI Modeling MCP"; the name in the user's install may differ.
+- When both exist, rank the evidence: the live model queried through a connector, then the project files (TMDL and PBIR), then the Power Query steps, then the source SQL. They can be out of sync (unsaved changes in the tool, a stale export), so say which one each claim comes from.
 - It covers the **semantic model**, not the report's pages and visuals. Visuals are edited as PBIR files.
 - **Fabric IQ** is a separate MCP endpoint for answering questions over governed data. It is a consumption tool, not an authoring tool; do not use it to edit.
 - Connectors act with the signed-in user's permissions and may send metadata and results to the model provider. Mention this when asking permission to connect a connector to production objects.

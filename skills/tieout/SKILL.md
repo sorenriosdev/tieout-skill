@@ -61,7 +61,7 @@ Pending: <decision or data, and who it waits for>
 
 ## Read-only deployments
 
-If you have no write tool, or the user or operator said not to write, create no files and no backups: nothing is overwritten, so say "Backup: none: read-only". Everything the files would have held goes in the reply: mode, evidence labels, queries to run, open questions and the closing block. Business rules from `tieout/rules.local.md` are read and applied as usual. Rules, labels and the tool gate apply unchanged; only the output channel changes.
+If you have no write tool, or the user or operator said not to write, or the user only asked to diagnose, inspect or explain, create no files and no backups: nothing is overwritten, so say "Backup: none: read-only". Everything the files would have held goes in the reply: mode, evidence labels, queries to run, open questions and the closing block. Business rules from `tieout/rules.local.md` are read and applied as usual. Rules, labels and the tool gate apply unchanged; only the output channel changes.
 
 ## Principles (always on)
 

@@ -38,7 +38,7 @@ Each finding is one row in `findings.md` with its status.
 | Saved filter value or slicer selection | Inherited from the source, or intended | Ask per value |
 | Text such as a title naming the source's unit, entity or currency | Inherited label | Ask per text |
 | Published-report binding points at the source's report | The next publish would overwrite the source's report | Confirm the intended report before any publish; never publish |
-| `activePageName` or `landingPageName` points to no page, duplicate filter or page-binding names | Structure left by copying or deleting pages | Technical; propose the fix |
+| `activePageName` or `landingPageName` points to no page, or duplicate page-binding names (a repeated filter name is only a note to check by hand) | Structure left by copying or deleting pages | Technical; propose the fix |
 | Folder name outside letters, digits, underscore, hyphen | The tool ignores it | Technical |
 
 Principle 11 applies to everything you plan to use as a replacement: check that it exists in the target model and holds data. A connector can run a count; otherwise label it `[assumption]` with the check.

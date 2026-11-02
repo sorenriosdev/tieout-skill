@@ -403,7 +403,7 @@ def bi_clone_reports_missing_fields_including_hidden_ones():
 def bi_clone_reports_structure_and_inherited_values():
     out = bi("pbir", CLONE / "Beta.Report").stdout
     assert "activePageName = 'old_overview'" in out
-    assert "filter name 'saved_filter' is used 2 times" in out
+    assert "filter name 'saved_filter' appears 2 times" in out
     assert "| Alpha Unit Revenue |" in out and "| A1 |" in out
     assert "11111111-1111-1111-1111-111111111111" in out
 
