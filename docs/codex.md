@@ -6,15 +6,15 @@
 
 ## Install without cloning the repository
 
-Use the branch or tag that has the release you want in place of `main` below. A private repository needs credentials on that machine (`gh auth login`, or a token in `GITHUB_TOKEN`); a public one does not.
+Install from a release tag (for example `v0.1.0`, created at release) rather than `main`, so a later change does not alter what you installed. A private repository needs credentials on that machine (`gh auth login`, or a token in `GITHUB_TOKEN`); a public one does not.
 
 **Option A: Codex's installer.** OpenAI's page says you can prompt the installer to download skills from other repositories. In Codex:
 
 ```
-$skill-installer install https://github.com/sorenriosdev/tieout-skill/tree/main/skills/tieout
+$skill-installer install https://github.com/sorenriosdev/tieout-skill/tree/v0.1.0/skills/tieout
 ```
 
-Third-party descriptions of the installer (not OpenAI's page) say it accepts a tree URL or `--repo owner/repo --path skills/tieout`, installs into `$CODEX_HOME/skills` (default `~/.codex/skills`), and refuses to overwrite an existing folder. OpenAI's page lists `~/.agents/skills` as the user location and does not mention `~/.codex/skills`. So after installing, run `/skills`; if `tieout` is not listed, move the folder to `~/.agents/skills/tieout` and restart Codex.
+Third-party descriptions of the installer (not OpenAI's page) say it accepts a tree URL or `--repo owner/repo --path skills/tieout`, installs into `$CODEX_HOME/skills` (default `~/.codex/skills`), and refuses to overwrite an existing folder. A reviewer who installed it that way reported the same destination. OpenAI's page lists `~/.agents/skills` as the user location and does not mention `~/.codex/skills`. So after installing, run `/skills`; if `tieout` is not listed, move the folder to `~/.agents/skills/tieout` and restart Codex.
 
 **Option B: only git, no full clone.**
 
@@ -37,6 +37,8 @@ Check `npx skills add --help` first: flags and supported agents change between v
 To update, remove `~/.agents/skills/tieout` and install again. To use it in one repository only, copy it to `<repo>/.agents/skills/tieout` instead.
 
 The skill needs Python 3.11 or later. `scripts/bi_fields.py` uses only the standard library; install the rest with `pip install sqlglot duckdb` if your environment allows it (the scripts name what is missing and stop).
+
+**Windows (PowerShell), not run on Windows yet:** use `py` for Python, quote paths that contain spaces, and install packages with `py -m pip install --user sqlglot==30.21.0 duckdb==1.5.6`. The scripts write UTF-8 and run under a legacy console code page. The skill itself checks which packages are missing and says which functions stay reduced; do not install them silently.
 
 **What the scripts do:** they make no network calls and start no other programs. The only file any of them can write is the new file you pass to `transpile_sql.py --out`, and it refuses to overwrite.
 

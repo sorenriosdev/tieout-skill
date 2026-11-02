@@ -6,15 +6,15 @@
 
 ## Instalar sin clonar el repositorio
 
-Usa la rama o etiqueta que tenga la versión que quieres en lugar de `main`. Un repositorio privado necesita credenciales en esa máquina (`gh auth login`, o un token en `GITHUB_TOKEN`); uno público no.
+Instala desde una etiqueta de versión (por ejemplo `v0.1.0`, que se crea al publicar) y no desde `main`, para que un cambio posterior no altere lo que instalaste. Un repositorio privado necesita credenciales en esa máquina (`gh auth login`, o un token en `GITHUB_TOKEN`); uno público no.
 
 **Opción A: el instalador de Codex.** La página de OpenAI dice que puedes pedirle al instalador que descargue skills de otros repositorios. En Codex:
 
 ```
-$skill-installer install https://github.com/sorenriosdev/tieout-skill/tree/main/skills/tieout
+$skill-installer install https://github.com/sorenriosdev/tieout-skill/tree/v0.1.0/skills/tieout
 ```
 
-Descripciones de terceros del instalador (no la página de OpenAI) dicen que acepta una URL de árbol o `--repo owner/repo --path skills/tieout`, instala en `$CODEX_HOME/skills` (por defecto `~/.codex/skills`) y se niega a sobrescribir una carpeta existente. La página de OpenAI señala `~/.agents/skills` como ubicación del usuario y no menciona `~/.codex/skills`. Por eso, tras instalar, ejecuta `/skills`; si `tieout` no aparece, mueve la carpeta a `~/.agents/skills/tieout` y reinicia Codex.
+Descripciones de terceros del instalador (no la página de OpenAI) dicen que acepta una URL de árbol o `--repo owner/repo --path skills/tieout`, instala en `$CODEX_HOME/skills` (por defecto `~/.codex/skills`) y se niega a sobrescribir una carpeta existente. Quien lo instaló así reportó el mismo destino. La página de OpenAI señala `~/.agents/skills` como ubicación del usuario y no menciona `~/.codex/skills`. Por eso, tras instalar, ejecuta `/skills`; si `tieout` no aparece, mueve la carpeta a `~/.agents/skills/tieout` y reinicia Codex.
 
 **Opción B: solo git, sin clon completo.**
 
@@ -37,6 +37,8 @@ Revisa antes `npx skills add --help`: las opciones y los agentes soportados camb
 Para actualizar, borra `~/.agents/skills/tieout` e instala de nuevo. Para usarla solo en un repositorio, cópiala a `<repo>/.agents/skills/tieout`.
 
 La skill necesita Python 3.11 o superior. `scripts/bi_fields.py` usa solo la biblioteca estándar; el resto se instala con `pip install sqlglot duckdb` si tu entorno lo permite (los scripts dicen qué falta y se detienen).
+
+**Windows (PowerShell), aún sin ejecutar en Windows:** usa `py` para Python, entrecomilla las rutas con espacios e instala con `py -m pip install --user sqlglot==30.21.0 duckdb==1.5.6`. Los scripts escriben UTF-8 y funcionan con una página de códigos antigua en la consola. La propia skill comprueba qué paquetes faltan y dice qué funciones quedan reducidas; no los instales en silencio.
 
 **Qué hacen los scripts:** no hacen llamadas de red ni lanzan otros programas. El único archivo que puede escribir cualquiera de ellos es el archivo nuevo que le pases a `transpile_sql.py --out`, y se niega a sobrescribir.
 

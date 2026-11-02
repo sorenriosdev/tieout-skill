@@ -4,6 +4,8 @@
 
 <p align="center"><a href="README.es.md">Leer en español</a></p>
 
+<p align="center"><a href="https://github.com/sorenriosdev/tieout-skill/actions/workflows/ci.yml"><img src="https://github.com/sorenriosdev/tieout-skill/actions/workflows/ci.yml/badge.svg" alt="CI status"></a></p>
+
 **tieout is a method for changing data work with evidence, packaged as an agent skill.** It covers editing queries, models, schemas and reports, reviewing logic, finding where two versions disagree, and moving queries between SQL engines.
 
 When an agent does that work, tieout makes it show its evidence, back up before it edits, and ask a named person before it decides a business rule. Its central check is the tie-out: showing that two versions of the same figure agree, or explaining exactly why they don't, with a script and not with a hunch.
@@ -40,7 +42,7 @@ claude plugin marketplace add sorenriosdev/tieout-skill
 claude plugin install tieout@tieout-skill
 ```
 
-**Codex**: see [docs/codex.md](docs/codex.md). **Other agents**: copy `skills/tieout/` into the agent's skills folder and ask for it by name. The scripts need Python 3.11 or later and `pip install sqlglot duckdb` for SQL work.
+**Codex**: see [docs/codex.md](docs/codex.md). **Other agents**: copy `skills/tieout/` into the agent's skills folder and ask for it by name. The scripts need Python 3.11 or later. The method itself needs no packages; `sqlglot` is needed to translate dialects, lint SQL and scan schema impact, and `duckdb` only to run this repository's tests and examples (`pip install sqlglot duckdb`).
 
 ## How it works
 

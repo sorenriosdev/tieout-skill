@@ -7,11 +7,20 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         python-version: ["3.11", "3.12", "3.13"]
+        include:
+          - os: windows-latest
+            python-version: "3.11"
+          - os: windows-latest
+            python-version: "3.13"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,8 +43,10 @@ jobs:
       - name: Synthetic reconcile example
         run: python examples/reconcile-synthetic/run_example.py
       - name: Synthetic BI fixture is reproducible
+        if: runner.os == 'Linux'
         run: |
           python examples/clone-bi-synthetic/make_fixture.py
           git diff --exit-code -- examples/clone-bi-synthetic
       - name: Compact AGENTS.md is in sync with SKILL.md
+        if: runner.os == 'Linux'
         run: python dev/build_agents_md.py --check
